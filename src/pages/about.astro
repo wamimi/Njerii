@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About | Njerii">
+  <div class="container">
+    <h1 class="title">About Me</h1>
+    
+    <div class="content pixel-border">
+      <p>
+        Hey! I'm a budding Rustacean diving deep into the world of systems programming
+        and Web3 technology. Currently focusing on:
+      </p>
+      
+      <ul>
+        <li>🦀 Learning Rust and systems programming</li>
+        <li>⚡️ Exploring Zero-Knowledge Proofs</li>
+        <li>🔐 Studying programmable cryptography</li>
+        <li>📚 Building with Solidity</li>
+      </ul>
+
+      <p>
+        I believe in building in public and sharing knowledge as we grow.
+      </p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .container {
+    padding: 2rem 0;
+  }
+
+  .title {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: var(--rust-color);
+  }
+
+  .content {
+    padding: 2rem;
+    background-color: var(--bg-color);
+  }
+
+  .content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    font-size: 1.2rem;
+  }
+
+  .content ul {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .content li {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+</style>

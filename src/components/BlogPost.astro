@@ -1,0 +1,78 @@
+---
+import { format } from 'date-fns';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  url: string;
+  tags: string[];
+}
+
+const { title, description, pubDate, url, tags } = Astro.props;
+---
+
+<article class="blog-post pixel-border">
+  <h2>{title}</h2>
+  <div class="date">{format(pubDate, 'MMMM d, yyyy')}</div>
+  <div class="tags">
+    {tags.map(tag => <span class="tag">{tag}</span>)}
+  </div>
+  <p>{description}</p>
+  <a href={url} class="read-more">Read More →</a>
+</article>
+
+<style>
+  .blog-post {
+    padding: 1.5rem;
+    background-color: var(--bg-color);
+  }
+
+  /*.blog-post:hover {
+    transform: translateY(-4px);
+  } */
+
+  h2 {
+    color: var(--rust-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  .date {
+    font-family: 'VT323', monospace;
+    color: var(--accent-brown);
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    background-color: var(--accent-tan);
+    color: var(--text-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-family: 'VT323', monospace;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .read-more {
+    color: var(--rust-color);
+    text-decoration: none;
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+  }
+
+  .read-more:hover {
+    text-decoration: underline;
+  }
+</style>

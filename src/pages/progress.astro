@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Progress Reports | Lelouch">
+  <div class="container">
+    <h1 class="title">Progress Reports</h1>
+    
+    <div class="reports-grid">
+      <div class="report pixel-border">
+        <h2>Latest Update</h2>
+        <div class="date">2024-01-01</div>
+        <p>Working on ML projects and expanding my CS knowledge.</p>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .container {
+    padding: 2rem 0;
+  }
+
+  .title {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: var(--accent-red);
+  }
+
+  .reports-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .report {
+    padding: 1.5rem;
+    background-color: var(--bg-color);
+  }
+
+  .report h2 {
+    color: var(--accent-red);
+    margin-bottom: 0.5rem;
+  }
+
+  .date {
+    font-family: 'VT323', monospace;
+    color: var(--accent-brown);
+    margin-bottom: 1rem;
+  }
+
+  .report p {
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+}
+
+const { src, alt, class: className } = Astro.props;
+---
+
+<img 
+  src={src} 
+  alt={alt} 
+  class:list={["pixel-image", className]}
+/>
+
+<style>
+  .pixel-image {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+</style>

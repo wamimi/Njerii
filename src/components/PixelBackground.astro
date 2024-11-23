@@ -1,0 +1,58 @@
+---
+interface Props {
+  opacity?: number;
+}
+
+const { opacity = 0.05 } = Astro.props;
+---
+
+<div class="pixel-bg" style={`opacity: ${opacity};`}>
+  <div class="avatar-overlay"></div>
+</div>
+
+<style>
+  .pixel-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      45deg,
+      var(--bg-color) 25%,
+      var(--accent-tan) 25%,
+      var(--accent-tan) 50%,
+      var(--bg-color) 50%,
+      var(--bg-color) 75%,
+      var(--accent-tan) 75%
+    );
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: -2;
+  }
+
+  .avatar-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 512px;
+    height: 512px;
+    background-image: url('src/assets/avatar.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.1;
+    filter: contrast(1.2) brightness(0.9);
+    image-rendering: pixelated;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @media (max-width: 768px) {
+    .avatar-overlay {
+      width: 256px;
+      height: 256px;
+    }
+  }
+</style>

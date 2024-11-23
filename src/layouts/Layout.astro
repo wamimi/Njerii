@@ -1,0 +1,215 @@
+---
+import '@fontsource/vt323';
+import '@fontsource/space-mono';
+import Footer from '../components/Footer.astro';
+import avatar from '../assets/avatar.jpg';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Njerii's Personal Website" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="src/assets/avatar.jpg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="pixel-bg"></div>
+    <nav>
+      <div class="nav-content">
+        <div class="logo">ンジェリー</div>
+        <div class="nav-links">
+          <a href="/">Blog</a>
+          <a href="/lab">Lab Notes</a>
+          <a href="/about">About</a>
+          <button id="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌸</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg-color: #f5f5f5;
+    --text-color: #2a2a2a;
+    --accent-red: #ff3333;
+    --accent-brown: #8b4513;
+    --accent-tan: #d2b48c;
+    --rust-color: #b7410e;
+  }
+
+  [data-theme="dark"] {
+    --bg-color: #2a2a2a;
+    --text-color: #f5f5f5;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Space Mono', monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pixel-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      45deg,
+      var(--bg-color) 25%,
+      var(--accent-tan) 25%,
+      var(--accent-tan) 50%,
+      var(--bg-color) 50%,
+      var(--bg-color) 75%,
+      var(--accent-tan) 75%
+    );
+    background-image: url(avatar.src);
+    background-size: 20px 20px;
+    background-repeat: repeat;
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  nav {
+    border-bottom: 2px solid var(--text-color);
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+    background-color: var(--bg-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: 'VT323', monospace;
+    font-size: 2rem;
+    color: var(--rust-color);
+    text-shadow: 2px 2px var(--accent-tan);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    position: relative;
+  }
+
+  .nav-links a:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--rust-color);
+  }
+
+  #theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+  }
+
+  .theme-icon {
+    transition: transform 0.3s ease;
+  }
+
+  #theme-toggle:hover .theme-icon {
+    transform: rotate(360deg);
+  }
+
+  main {
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    width: 100%;
+  }
+
+  h1, h2, h3 {
+    font-family: 'VT323', monospace;
+  }
+
+  .pixel-border {
+    border: 2px solid var(--text-color);
+    position: relative;
+  }
+
+  .pixel-border::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 100%;
+    height: 100%;
+    background: var(--rust-color);
+    z-index: -1;
+  }
+</style>
+
+<script>
+  const themeToggle = document.getElementById('theme-toggle');
+  
+  function updateTheme(isDark: boolean) {
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    const toggle = document.querySelector('.theme-icon');
+    if (toggle) {
+      toggle.textContent = isDark ? '🌙' : '🌸';
+    }
+  }
+
+  themeToggle?.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    updateTheme(!isDark);
+  });
+
+  // Initialize theme based on user preference
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  updateTheme(prefersDark);
+</script>
