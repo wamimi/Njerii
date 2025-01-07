@@ -17,34 +17,37 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="description" content="Njerii's Personal Website" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="src/assets/avatar.jpg" />
+    <link rel="icon" type="image/svg+xml" href={avatar.src} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
   <body>
     <div class="pixel-bg"></div>
-    <nav>
-      <div class="nav-content">
-        <div class="logo">ンジェリー</div>
-        <div class="nav-links">
-          <a href="/">Blog</a>
-          <a href="/lab">Lab Notes</a>
-          <a href="/about">About</a>
-          <button id="theme-toggle" aria-label="Toggle theme">
-            <span class="theme-icon">🌸</span>
-          </button>
+    <div class="content-wrapper">
+      <nav>
+        <div class="nav-content">
+          <div class="logo">ンジェリー</div>
+          <div class="nav-links">
+            <a href="/">Blog</a>
+            <a href="/lab">Lab Notes</a>
+            <a href="/about">About</a>
+            <button id="theme-toggle" aria-label="Toggle theme">
+              <span class="theme-icon">🌸</span>
+            </button>
+          </div>
         </div>
-      </div>
-    </nav>
-    <main>
-      <slot />
-    </main>
-    <Footer />
+      </nav>
+      <main>
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>
 
 <style is:global>
   :root {
+    --max-width: 900px;
     --bg-color: #f5f5f5;
     --text-color: #2a2a2a;
     --accent-red: #ff3333;
@@ -69,10 +72,18 @@ const { title } = Astro.props;
     background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
-    position: relative;
     min-height: 100vh;
+  }
+
+  .content-wrapper {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
   }
 
   .pixel-bg {
@@ -90,12 +101,27 @@ const { title } = Astro.props;
       var(--bg-color) 75%,
       var(--accent-tan) 75%
     );
-    background-image: url(avatar.src);
     background-size: 20px 20px;
     background-repeat: repeat;
     opacity: 0.05;
     pointer-events: none;
-    z-index: -1;
+    z-index: 0;
+  }
+
+  .pixel-bg::after {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 512px;
+    height: 512px;
+    background-image: url(${avatar.src});
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.1;
+    filter: contrast(1.2) brightness(0.9);
+    pointer-events: none;
   }
 
   nav {
@@ -106,12 +132,10 @@ const { title } = Astro.props;
     position: sticky;
     top: 0;
     z-index: 100;
+    width: 100%;
   }
 
   .nav-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -166,9 +190,6 @@ const { title } = Astro.props;
 
   main {
     flex: 1;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
     width: 100%;
   }
 
@@ -190,6 +211,12 @@ const { title } = Astro.props;
     height: 100%;
     background: var(--rust-color);
     z-index: -1;
+  }
+
+  @media (max-width: 768px) {
+    .content-wrapper {
+      padding: 0 1rem;
+    }
   }
 </style>
 
