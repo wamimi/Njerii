@@ -8,19 +8,27 @@ import Layout from '../layouts/Layout.astro';
     
     <div class="content pixel-border">
       <p>
-        Hey! I'm a budding Rustacean diving deep into the world of systems programming
-        and Web3 technology. Currently focusing on:
+        Oh, so curiosity led you here? Well, buckle up – you're about to meet someone who is unabashedly cringe and who loves fashion!
       </p>
       
-      <ul>
-        <li>🦀 Learning Rust and systems programming</li>
-        <li>⚡️ Exploring Zero-Knowledge Proofs</li>
-        <li>🔐 Studying programmable cryptography</li>
-        <li>📚 Building with Solidity</li>
-      </ul>
+      <p>
+        I spend most of my days as a Rust intern at Supra Oracles, diving into formal testing – fuzzing protocols and optimizing blockchain storage systems. (Trust me, it's more exciting than it sounds!)
+      </p>
 
       <p>
-        I believe in building in public and sharing knowledge as we grow.
+        The Rust journey? It's been quite the ride. I've developed this peculiar love-hate relationship with the borrow checker (we're frenemies now, but we're working on it). And yes, I'm still learning – because with Rust, it's an endless adventure of discovery. After all, my motto is simple: the grind must be there cause it's either perfection or nothing, be the best or stop trying.
+      </p>
+
+      <p>
+        But life exists beyond the terminal, you know? I'm the force behind LedgerLady, where we're rewriting the blockchain narrative. Over at ETH Dada (yes, 'Dada' means sister – how cool is that?), we're building a sisterhood of Solidity developers who believe in lifting each other up.
+      </p>
+
+      <p>
+        I am also learning to have fun, because who said devs can't have fun? I am talking anime, books, being cringe, and fashion.
+      </p>
+
+      <p class="outro">
+        Dreams don't work unless you do. Now, if you'll excuse me, I have some code to perfect and anime episodes to catch up on (watching apothecary diaries s2 rn) ✨
       </p>
     </div>
   </div>
@@ -29,33 +37,51 @@ import Layout from '../layouts/Layout.astro';
 <style>
   .container {
     padding: 2rem 0;
+    max-width: 800px;
+    margin: 0 auto;
   }
 
   .title {
     font-size: 3rem;
     margin-bottom: 2rem;
     color: var(--rust-color);
+    text-align: center;
   }
 
   .content {
     padding: 2rem;
     background-color: var(--bg-color);
+    line-height: 1.8;
   }
 
   .content p {
     margin-bottom: 1.5rem;
-    line-height: 1.6;
-    font-size: 1.2rem;
-  }
-
-  .content ul {
-    margin: 1.5rem 0;
-    padding-left: 1.5rem;
-  }
-
-  .content li {
-    margin-bottom: 0.5rem;
     font-size: 1.1rem;
-    line-height: 1.6;
+  }
+
+  .content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .outro {
+    font-style: italic;
+    color: var(--accent-brown);
+    border-top: 2px dashed var(--accent-tan);
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+
+    .title {
+      font-size: 2.5rem;
+    }
+
+    .content {
+      padding: 1.5rem;
+    }
   }
 </style>

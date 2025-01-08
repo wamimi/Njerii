@@ -22,7 +22,7 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <div class="pixel-bg"></div>
+    <canvas id="bgCanvas"></canvas>
     <div class="content-wrapper">
       <nav>
         <div class="nav-content">
@@ -54,11 +54,15 @@ const { title } = Astro.props;
     --accent-brown: #8b4513;
     --accent-tan: #d2b48c;
     --rust-color: #b7410e;
+    --gradient-start: #f5f5f5;
+    --gradient-end: #d2b48c;
   }
 
   [data-theme="dark"] {
     --bg-color: #2a2a2a;
     --text-color: #f5f5f5;
+    --gradient-start: #2a2a2a;
+    --gradient-end: #4a3525;
   }
 
   * {
@@ -69,10 +73,18 @@ const { title } = Astro.props;
 
   body {
     font-family: 'Space Mono', monospace;
-    background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
     min-height: 100vh;
+  }
+
+  #bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
   }
 
   .content-wrapper {
@@ -84,44 +96,6 @@ const { title } = Astro.props;
     min-height: 100vh;
     position: relative;
     z-index: 1;
-  }
-
-  .pixel-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      45deg,
-      var(--bg-color) 25%,
-      var(--accent-tan) 25%,
-      var(--accent-tan) 50%,
-      var(--bg-color) 50%,
-      var(--bg-color) 75%,
-      var(--accent-tan) 75%
-    );
-    background-size: 20px 20px;
-    background-repeat: repeat;
-    opacity: 0.05;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .pixel-bg::after {
-    content: '';
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 512px;
-    height: 512px;
-    background-image: url(${avatar.src});
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.1;
-    filter: contrast(1.2) brightness(0.9);
-    pointer-events: none;
   }
 
   nav {
@@ -221,6 +195,91 @@ const { title } = Astro.props;
 </style>
 
 <script>
+  class Particle {
+    x: number;
+    y: number;
+    size: number;
+    speedX: number;
+    speedY: number;
+    opacity: number;
+
+    constructor(canvas: HTMLCanvasElement) {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2;
+      this.speedX = Math.random() * 0.5 - 0.25;
+      this.speedY = Math.random() * 0.5 - 0.25;
+      this.opacity = Math.random() * 0.5 + 0.2;
+    }
+
+    update(canvas: HTMLCanvasElement) {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      if (this.x > canvas.width) this.x = 0;
+      if (this.x < 0) this.x = canvas.width;
+      if (this.y > canvas.height) this.y = 0;
+      if (this.y < 0) this.y = canvas.height;
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+      ctx.fillStyle = `rgba(var(--text-color-rgb), ${this.opacity})`;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  const canvas = document.getElementById('bgCanvas') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d');
+  const particles: Particle[] = [];
+  const particleCount = 50;
+
+  function initCanvas() {
+    if (!canvas) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Clear existing particles
+    particles.length = 0;
+
+    // Create new particles
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle(canvas));
+    }
+  }
+
+  function animate() {
+    if (!ctx) return;
+    
+    const gradientStart = getComputedStyle(document.documentElement)
+      .getPropertyValue('--gradient-start').trim();
+    const gradientEnd = getComputedStyle(document.documentElement)
+      .getPropertyValue('--gradient-end').trim();
+    
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, gradientStart);
+    gradient.addColorStop(1, gradientEnd);
+    
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    particles.forEach(particle => {
+      particle.update(canvas);
+      particle.draw(ctx);
+    });
+    
+    requestAnimationFrame(animate);
+  }
+
+  // Initialize canvas and start animation
+  initCanvas();
+  animate();
+
+  // Handle window resize
+  window.addEventListener('resize', initCanvas);
+
+  // Theme toggle functionality
   const themeToggle = document.getElementById('theme-toggle');
   
   function updateTheme(isDark: boolean) {
@@ -236,7 +295,6 @@ const { title } = Astro.props;
     updateTheme(!isDark);
   });
 
-  // Initialize theme based on user preference
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   updateTheme(prefersDark);
 </script>
