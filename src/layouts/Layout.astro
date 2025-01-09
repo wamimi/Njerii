@@ -22,7 +22,7 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <canvas id="bgCanvas"></canvas>
+    <div class="stars"></div>
     <div class="content-wrapper">
       <nav>
         <div class="nav-content">
@@ -76,15 +76,32 @@ const { title } = Astro.props;
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
     min-height: 100vh;
+    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
   }
 
-  #bgCanvas {
+  .stars {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    pointer-events: none;
+    z-index: 0;
+    background: transparent;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--rust-color);
+    opacity: 0;
+    animation: twinkle ease-in-out infinite;
   }
 
   .content-wrapper {
@@ -192,92 +209,123 @@ const { title } = Astro.props;
       padding: 0 1rem;
     }
   }
+  /* Shooting Star Animation */
+  @keyframes shoot {
+    0% {
+      transform: translate(-100%, 100%) rotate(45deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(100%, -100%) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  .shooting-star {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background: white;
+    opacity: 0;
+    animation: shoot 1s linear infinite;
+  }
+
+  /* Blinking Cursor for Navigation Links */
+  .nav-links a::after {
+    content: '|';
+    opacity: 0;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  /* Typing Animation for Headings */
+  .typing {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--rust-color);
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  @keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--rust-color); }
+  }
+  /* Custom Cursor */
+  body {
+    cursor: none;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    width: 16px;
+    height: 16px;
+    background: var(--rust-color);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
+  }
+
+  .custom-cursor.hover {
+    width: 32px;
+    height: 32px;
+    background: white;
+  }
+
+  /* Glitch Effects */
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(2px, -2px); }
+    60% { transform: translate(-2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+  }
+
+  .glitch {
+    animation: glitch 0.5s infinite;
+  }
+
+  .glitch:hover {
+    animation: none;
+  }
+
 </style>
 
 <script>
-  class Particle {
-    x: number;
-    y: number;
-    size: number;
-    speedX: number;
-    speedY: number;
-    opacity: number;
+  function createStar() {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = `${Math.random() * 100}%`;
+    star.style.top = `${Math.random() * 100}%`;
+    star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+    star.style.animationDelay = `${Math.random() * 2}s`;
+    return star;
+  }
 
-    constructor(canvas: HTMLCanvasElement) {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 2;
-      this.speedX = Math.random() * 0.5 - 0.25;
-      this.speedY = Math.random() * 0.5 - 0.25;
-      this.opacity = Math.random() * 0.5 + 0.2;
-    }
+  function initStars() {
+    const container = document.querySelector('.stars');
+    if (!container) return;
 
-    update(canvas: HTMLCanvasElement) {
-      this.x += this.speedX;
-      this.y += this.speedY;
-
-      if (this.x > canvas.width) this.x = 0;
-      if (this.x < 0) this.x = canvas.width;
-      if (this.y > canvas.height) this.y = 0;
-      if (this.y < 0) this.y = canvas.height;
-    }
-
-    draw(ctx: CanvasRenderingContext2D) {
-      ctx.fillStyle = `rgba(var(--text-color-rgb), ${this.opacity})`;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
+    // Creates initial stars
+    for (let i = 0; i < 50; i++) {
+      container.appendChild(createStar());
     }
   }
 
-  const canvas = document.getElementById('bgCanvas') as HTMLCanvasElement;
-  const ctx = canvas.getContext('2d');
-  const particles: Particle[] = [];
-  const particleCount = 50;
-
-  function initCanvas() {
-    if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Clear existing particles
-    particles.length = 0;
-
-    // Create new particles
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle(canvas));
-    }
-  }
-
-  function animate() {
-    if (!ctx) return;
-    
-    const gradientStart = getComputedStyle(document.documentElement)
-      .getPropertyValue('--gradient-start').trim();
-    const gradientEnd = getComputedStyle(document.documentElement)
-      .getPropertyValue('--gradient-end').trim();
-    
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, gradientStart);
-    gradient.addColorStop(1, gradientEnd);
-    
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    particles.forEach(particle => {
-      particle.update(canvas);
-      particle.draw(ctx);
-    });
-    
-    requestAnimationFrame(animate);
-  }
-
-  // Initialize canvas and start animation
-  initCanvas();
-  animate();
-
-  // Handle window resize
-  window.addEventListener('resize', initCanvas);
+  // Initializes stars
+  initStars();
 
   // Theme toggle functionality
   const themeToggle = document.getElementById('theme-toggle');
@@ -297,4 +345,89 @@ const { title } = Astro.props;
 
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   updateTheme(prefersDark);
+
+  // Mouse-Reactive Stars
+  document.addEventListener('mousemove', (e) => {
+    const stars = document.querySelectorAll('.star');
+    stars.forEach(star => {
+      const speed = 0.05; // Adjust sensitivity
+      const x = (e.clientX - window.innerWidth / 2) * speed;
+      const y = (e.clientY - window.innerHeight / 2) * speed;
+      star.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  });
+
+  // Shooting Stars
+  function createShootingStar() {
+    const shootingStar = document.createElement('div');
+    shootingStar.className = 'shooting-star';
+    shootingStar.style.left = `${Math.random() * 100}%`;
+    shootingStar.style.top = `${Math.random() * 100}%`;
+    shootingStar.style.animationDuration = `${Math.random() * 2 + 1}s`;
+    return shootingStar;
+  }
+
+  function initShootingStars() {
+    const container = document.querySelector('.stars');
+    if (!container) return;
+
+    setInterval(() => {
+      container.appendChild(createShootingStar());
+      setTimeout(() => {
+        container.removeChild(container.lastChild);
+      }, 2000); // Removes after animation ends
+    }, 3000); // Adds a new shooting star every 3 seconds
+  }
+
+  // Initialize Shooting Stars
+  initShootingStars();
+
+  // Typing Animation for Headings
+  function typeText(element) {
+    const text = element.textContent;
+    element.textContent = '';
+    let i = 0;
+    const typingInterval = setInterval(() => {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        i++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 100); 
+  }
+
+  // Typing Animation to Headings
+  document.querySelectorAll('h1, h2, h3').forEach(heading => {
+    heading.classList.add('typing');
+    typeText(heading);
+  });
+  // Custom Cursor
+  const cursor = document.createElement('div');
+  cursor.className = 'custom-cursor';
+  document.body.appendChild(cursor);
+
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+  });
+
+  document.querySelectorAll('a, button').forEach(element => {
+    element.addEventListener('mouseenter', () => {
+      cursor.classList.add('hover');
+    });
+    element.addEventListener('mouseleave', () => {
+      cursor.classList.remove('hover');
+    });
+  });
+
+  // Glitch Effects
+  document.querySelectorAll('.glitch').forEach(element => {
+    setInterval(() => {
+      element.classList.toggle('glitch');
+    }, 3000); // glitch every 3 seconds
+  });
+
+
+
 </script>

@@ -6,16 +6,16 @@ export async function processAvatar() {
   const inputPath = path.join(process.cwd(), 'src/assets/avatar.jpg');
   const publicDir = path.join(process.cwd(), 'public');
 
-  // Ensure public directory exists
+  // Ensures public directory exists
   await fs.mkdir(publicDir, { recursive: true });
 
-  // Create favicon
+  //favicon
   await sharp(inputPath)
     .resize(32, 32, { fit: 'contain' })
     .png()
     .toFile(path.join(publicDir, 'favicon.png'));
 
-  // Create background image
+  //background image
   await sharp(inputPath)
     .resize(512, 512, { fit: 'contain' })
     .png()
