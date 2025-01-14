@@ -5,30 +5,30 @@ import Layout from '../../layouts/Layout.astro';
 import { format } from 'date-fns';
 
 interface Props {
-  post: CollectionEntry<'blog'>;
+  note: CollectionEntry<'lab'>;
 }
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  return posts.map(post => ({
-    params: { slug: post.slug },
-    props: { post },
+  const labNotes = await getCollection('lab');
+  return labNotes.map(note => ({
+    params: { slug: note.slug },
+    props: { note },
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await post.render();
+const { note } = Astro.props;
+const { Content } = await note.render();
 ---
 
-<Layout title={post.data.title}>
-  <article class="blog-post">
-    <h1>{post.data.title}</h1>
+<Layout title={note.data.title}>
+  <article class="lab-note">
+    <h1>{note.data.title}</h1>
     <div class="metadata">
-      <time datetime={post.data.pubDate.toISOString()}>
-        {format(post.data.pubDate, 'MMMM d, yyyy')}
+      <time datetime={note.data.pubDate.toISOString()}>
+        {format(note.data.pubDate, 'MMMM d, yyyy')}
       </time>
       <div class="tags">
-        {post.data.tags.map(tag => <span class="tag">{tag}</span>)}
+        {note.data.tags.map(tag => <span class="tag">{tag}</span>)}
       </div>
     </div>
     <div class="content">
@@ -38,7 +38,7 @@ const { Content } = await post.render();
 </Layout>
 
 <style>
-  .blog-post {
+  .lab-note {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem 0;

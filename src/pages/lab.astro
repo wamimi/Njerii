@@ -1,5 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const labNotes = (await getCollection('lab')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
 <Layout title="Lab Notes | Njerii">
@@ -8,25 +13,18 @@ import Layout from '../layouts/Layout.astro';
     <p class="subtitle">Documenting my experiments and learnings in Rust, ZKPs, and Web3</p>
     
     <div class="notes-grid">
-      <div class="note pixel-border">
-        <h2>ZKP Implementation Progress</h2>
-        <div class="date">2024-01-15</div>
-        <div class="tags">
-          <span class="tag">ZKP</span>
-          <span class="tag">Cryptography</span>
-        </div>
-        <p>Successfully implemented a basic zero-knowledge proof system using Rust...</p>
-      </div>
-
-      <div class="note pixel-border">
-        <h2>Rust Smart Contracts</h2>
-        <div class="date">2024-01-10</div>
-        <div class="tags">
-          <span class="tag">Rust</span>
-          <span class="tag">Solidity</span>
-        </div>
-        <p>Exploring the intersection of Rust and smart contract development...</p>
-      </div>
+      {labNotes.map(note => (
+        <a href={`/lab/${note.slug}`} class="note pixel-border">
+          <h2>{note.data.title}</h2>
+          <div class="date">{new Date(note.data.pubDate).toLocaleDateString()}</div>
+          <div class="tags">
+            {note.data.tags.map(tag => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+          <p>{note.data.description}</p>
+        </a>
+      ))}
     </div>
   </div>
 </Layout>
@@ -57,6 +55,8 @@ import Layout from '../layouts/Layout.astro';
   .note {
     padding: 1.5rem;
     background-color: var(--bg-color);
+    text-decoration: none;
+    color: inherit;
   }
 
   .note h2 {
