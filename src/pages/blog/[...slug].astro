@@ -1,0 +1,102 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { format } from 'date-fns';
+
+export async function getStaticPaths() {
+  const blogPosts = await getCollection('blog');
+  return blogPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+  <article class="blog-post">
+    <h1>{post.data.title}</h1>
+    <div class="metadata">
+      <time datetime={post.data.pubDate.toISOString()}>
+        {format(post.data.pubDate, 'MMMM d, yyyy')}
+      </time>
+      <div class="tags">
+        {post.data.tags.map(tag => <span class="tag">{tag}</span>)}
+      </div>
+    </div>
+    <div class="content">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: var(--rust-color);
+    margin-bottom: 1rem;
+  }
+
+  .metadata {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-tan);
+  }
+
+  time {
+    font-family: 'VT323', monospace;
+    color: var(--accent-brown);
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .tag {
+    background-color: var(--accent-tan);
+    color: var(--text-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-family: 'VT323', monospace;
+  }
+
+  .content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+  }
+
+  .content :global(h2) {
+    font-size: 1.8rem;
+    color: var(--rust-color);
+    margin: 2rem 0 1rem;
+  }
+
+  .content :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .content :global(code) {
+    background-color: var(--accent-tan);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  .content :global(pre) {
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+</style>

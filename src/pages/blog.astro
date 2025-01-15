@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import BlogPost from '../components/BlogPost.astro';
 import { getCollection } from 'astro:content';
 
+// Fetch and sort blog posts by publication date
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
