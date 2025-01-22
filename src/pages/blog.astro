@@ -1,17 +1,17 @@
 ---
+// src/pages/blog.astro
 import Layout from '../layouts/Layout.astro';
 import BlogPost from '../components/BlogPost.astro';
 import { getCollection } from 'astro:content';
 
-// Fetch and sort blog posts by publication date
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
 <Layout title="Blog | Njerii">
-  <div class="container">
-    <h1 class="title">Blog Posts</h1>
+  <div class="blog-container">
+    <h1 class="blog-title">Blog Posts</h1>
     <div class="blog-grid">
       {posts.map(post => (
         <BlogPost
@@ -27,22 +27,34 @@ const posts = (await getCollection('blog')).sort(
 </Layout>
 
 <style>
-  .container {
-    padding: 2rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  .blog-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2rem 1rem;
   }
 
-  .title {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+  .blog-title {
+    font-size: 2.5rem;
     color: var(--rust-color);
+    margin-bottom: 2rem;
+    text-align: center;
+    border-bottom: 3px solid var(--accent-tan);
+    padding-bottom: 1rem;
   }
 
   .blog-grid {
     display: grid;
     gap: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  @media (max-width: 768px) {
+    .blog-container {
+      padding: 1rem;
+    }
+    
+    .blog-title {
+      font-size: 2rem;
+    }
   }
 </style>

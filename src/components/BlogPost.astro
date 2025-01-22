@@ -1,4 +1,5 @@
 ---
+// src/components/BlogPost.astro
 import { format } from 'date-fns';
 
 interface Props {
@@ -14,9 +15,11 @@ const { title, description, pubDate, url, tags } = Astro.props;
 
 <article class="blog-post pixel-border">
   <h2>{title}</h2>
-  <div class="date">{format(pubDate, 'MMMM d, yyyy')}</div>
-  <div class="tags">
-    {tags.map(tag => <span class="tag">{tag}</span>)}
+  <div class="metadata">
+    <time class="date">{format(pubDate, 'MMMM d, yyyy')}</time>
+    <div class="tags">
+      {tags.map(tag => <span class="tag">{tag}</span>)}
+    </div>
   </div>
   <p>{description}</p>
   <a href={url} class="read-more">Read More →</a>
@@ -25,54 +28,116 @@ const { title, description, pubDate, url, tags } = Astro.props;
 <style>
   .blog-post {
     padding: 1.5rem;
-    background-color: var(--bg-color);
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--text-color);
+    position: relative;
+    transition: transform 0.2s ease;
   }
 
-  /*.blog-post:hover {
-    transform: translateY(-4px);
-  } */
+  .blog-post:hover {
+    transform: translateY(-5px);
+  }
 
   h2 {
     color: var(--rust-color);
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+
+  .metadata {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .date {
     font-family: 'VT323', monospace;
     color: var(--accent-brown);
-    margin-bottom: 1rem;
+    font-size: 1.1rem;
   }
 
   .tags {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 1rem;
     flex-wrap: wrap;
   }
 
   .tag {
-    background-color: var(--accent-tan);
+    background: var(--accent-tan);
     color: var(--text-color);
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 3px;
+    font-size: 0.85rem;
     font-family: 'VT323', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   p {
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     line-height: 1.6;
+    color: var(--text-color);
   }
 
   .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     color: var(--rust-color);
     text-decoration: none;
     font-family: 'VT323', monospace;
     font-size: 1.1rem;
+    transition: opacity 0.2s ease;
   }
 
   .read-more:hover {
-    text-decoration: underline;
+    opacity: 0.8;
+    text-decoration: none;
+  }
+
+  /* Pixel border effect */
+  .pixel-border::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 100%;
+    height: 100%;
+    background: var(--rust-color);
+    z-index: -1;
+  }
+
+  /* Code block styling */
+  pre {
+    background: rgba(0, 0, 0, 0.1) !important;
+    padding: 1rem !important;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid var(--accent-tan);
+  }
+
+  code {
+    font-family: 'Space Mono', monospace !important;
+    font-size: 0.9rem !important;
+    color: var(--text-color) !important;
+    background: transparent !important;
+  }
+
+  .shiki {
+    padding: 1rem !important;
+    border-radius: 4px !important;
+  }
+
+  @media (max-width: 768px) {
+    .blog-post {
+      padding: 1rem;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+    }
   }
 </style>
