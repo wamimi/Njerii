@@ -40,6 +40,7 @@ const currentPath = Astro.url.pathname;
               </a>
             )}
             <a href="/">Blog</a>
+            <a href="/projects">Projects</a>
             <a href="/lab">Lab Notes</a>
             <a href="/about">About</a>
             <button id="theme-toggle" aria-label="Toggle theme">
@@ -348,7 +349,7 @@ const currentPath = Astro.url.pathname;
   }
 </style>
 
-<script>
+<script is:inline>
   // Function to update the theme
   function updateTheme(isDark) {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
@@ -406,10 +407,12 @@ const currentPath = Astro.url.pathname;
   document.addEventListener('mousemove', (e) => {
     const stars = document.querySelectorAll('.star');
     stars.forEach(star => {
-      const speed = 0.05; // Adjust sensitivity
-      const x = (e.clientX - window.innerWidth / 2) * speed;
-      const y = (e.clientY - window.innerHeight / 2) * speed;
-      star.style.transform = `translate(${x}px, ${y}px)`;
+      if (star instanceof HTMLElement) {
+        const speed = 0.05; // Adjust sensitivity
+        const x = (e.clientX - window.innerWidth / 2) * speed;
+        const y = (e.clientY - window.innerHeight / 2) * speed;
+        star.style.transform = `translate(${x}px, ${y}px)`;
+      }
     });
   });
 
@@ -430,7 +433,9 @@ const currentPath = Astro.url.pathname;
     setInterval(() => {
       container.appendChild(createShootingStar());
       setTimeout(() => {
-        container.removeChild(container.lastChild);
+        if (container.lastChild) {
+          container.removeChild(container.lastChild);
+        }
       }, 2000); // Removes after animation ends
     }, 3000); // Adds a new shooting star every 3 seconds
   }
@@ -440,7 +445,8 @@ const currentPath = Astro.url.pathname;
 
   // Typing Animation for Headings
   function typeText(element) {
-    const text = element.textContent;
+    if (!(element instanceof HTMLElement)) return;
+    const text = element.textContent || '';
     element.textContent = '';
     let i = 0;
     const typingInterval = setInterval(() => {
@@ -455,8 +461,10 @@ const currentPath = Astro.url.pathname;
 
   // Typing Animation to Headings
   document.querySelectorAll('h1, h2, h3').forEach(heading => {
-    heading.classList.add('typing');
-    typeText(heading);
+    if (heading instanceof HTMLElement) {
+      heading.classList.add('typing');
+      typeText(heading);
+    }
   });
 
   // Custom Cursor
@@ -481,7 +489,9 @@ const currentPath = Astro.url.pathname;
   // Glitch Effects
   document.querySelectorAll('.glitch').forEach(element => {
     setInterval(() => {
-      element.classList.toggle('glitch');
+      if (element instanceof HTMLElement) {
+        element.classList.toggle('glitch');
+      }
     }, 3000); // glitch every 3 seconds
   });
 </script>
