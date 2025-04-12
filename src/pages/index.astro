@@ -8,6 +8,26 @@ const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 const latestPost = posts[0]; // Get the latest post
+
+// Try to fetch projects collection if it exists
+let featuredProject = null;
+try {
+  const projects = await getCollection('projects');
+  const featuredProjects = projects.filter(project => project.data.featured)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  
+  if (featuredProjects.length > 0) {
+    // Only import ProjectCard if we have featured projects
+    const { default: ProjectCard } = await import('../components/ProjectCard.astro');
+    featuredProject = { 
+      data: featuredProjects[0].data, 
+      slug: featuredProjects[0].slug,
+      ProjectCard
+    };
+  }
+} catch (error) {
+  console.error('Error loading projects:', error);
+}
 ---
 
 <Layout title="Njerii">
@@ -39,7 +59,7 @@ const latestPost = posts[0]; // Get the latest post
           url={`/blog/${latestPost.slug}`}
         />
       </div>
-      <a href="/blog" class="read-more">View All Posts →</a> <!-- Link to the blog page -->
+      <a href="/blog" class="read-more">View All Posts →</a>
     </div>
 
     <!-- Secret Message -->
@@ -171,6 +191,10 @@ const latestPost = posts[0]; // Get the latest post
     margin: -1rem;
   }
 
+  .project-section {
+    margin-top: 2rem;
+  }
+
   .section-title {
     font-size: 2rem;
     color: var(--rust-color);
@@ -178,7 +202,7 @@ const latestPost = posts[0]; // Get the latest post
     text-align: center;
   }
 
-  .blog-grid {
+  .blog-grid, .project-grid {
     display: grid;
     gap: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -224,21 +248,33 @@ const latestPost = posts[0]; // Get the latest post
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.shiftKey && e.key === 'C') {
       const secretMessage = document.getElementById('secret-message');
-      secretMessage.classList.toggle('hidden');
+      if (secretMessage) {
+        secretMessage.classList.toggle('hidden');
+      }
     }
   });
 
   // Background Music
   const musicToggle = document.getElementById('music-toggle');
-  const backgroundMusic = document.getElementById('background-music');
+  const backgroundMusic = document.getElementById('background-music') as HTMLAudioElement | null;
 
-  musicToggle?.addEventListener('click', () => {
-    if (backgroundMusic.paused) {
-      backgroundMusic.play();
-      musicToggle.querySelector('.music-icon').textContent = '🎵';
-    } else {
-      backgroundMusic.pause();
-      musicToggle.querySelector('.music-icon').textContent = '🔇';
-    }
-  });
+  if (musicToggle) {
+    musicToggle.addEventListener('click', () => {
+      if (backgroundMusic && !backgroundMusic.paused) {
+        backgroundMusic.pause();
+        const icon = musicToggle.querySelector('.music-icon');
+        if (icon) {
+          icon.textContent = '🔇';
+        }
+      } else if (backgroundMusic) {
+        backgroundMusic.play().catch(err => {
+          console.error('Error playing audio:', err);
+        });
+        const icon = musicToggle.querySelector('.music-icon');
+        if (icon) {
+          icon.textContent = '🎵';
+        }
+      }
+    });
+  }
 </script>
