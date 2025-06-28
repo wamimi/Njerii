@@ -1,0 +1,142 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import WanderingMaomao from '../components/WanderingMaomao.astro';
+import CommandPalette from '../components/interactive/CommandPalette.jsx';
+import MaomaoGallery from '../components/interactive/MaomaoGallery.jsx';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Njerii's Digital Apothecary - Crafting secure and private digital solutions through Zero-Knowledge Proofs, Cryptography, and Protocol Engineering" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="author" content="Njerii">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content={title}>
+  <meta property="twitter:description" content={description}>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- Preload critical fonts -->
+  <link rel="preload" href="/fonts/jetbrains-mono-v18-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/lora-v32-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+</head>
+<body class="math-pattern">
+  <Navbar />
+  
+  <main>
+    <slot />
+  </main>
+  
+  <Footer />
+  <WanderingMaomao />
+  
+  <!-- Interactive Components -->
+  <CommandPalette client:idle />
+  <MaomaoGallery client:visible />
+  
+  <!-- Global Scripts -->
+  <script>
+    // Theme management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      localStorage.setItem('theme', theme);
+    }
+    
+    // Initialize theme on page load
+    initTheme();
+    
+    // Global function for theme toggle (used by CommandPalette)
+    window.toggleTheme = function() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const newTheme = isDark ? 'light' : 'dark';
+      
+      document.documentElement.classList.toggle('dark', newTheme === 'dark');
+      localStorage.setItem('theme', newTheme);
+    };
+    
+    // Global function for Maomao Gallery (used by Footer)
+    window.openMaomaoGallery = function() {
+      // This will be connected to the React component
+      const event = new CustomEvent('openMaomaoGallery');
+      window.dispatchEvent(event);
+    };
+    
+    // Command Palette trigger
+    let commandPaletteOpen = false;
+    
+    window.toggleCommandPalette = function() {
+      commandPaletteOpen = !commandPaletteOpen;
+      const event = new CustomEvent('toggleCommandPalette', { 
+        detail: { open: commandPaletteOpen } 
+      });
+      window.dispatchEvent(event);
+    };
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Cmd+K or Ctrl+K for command palette
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        window.toggleCommandPalette();
+      }
+    });
+    
+    // Smooth scrolling for anchor links
+    document.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
+        e.preventDefault();
+        const id = target.getAttribute('href').slice(1);
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+    
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-slide-up');
+        }
+      });
+    }, observerOptions);
+    
+    // Observe elements with animation class
+    document.addEventListener('DOMContentLoaded', () => {
+      const animatedElements = document.querySelectorAll('.animate-on-scroll');
+      animatedElements.forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>

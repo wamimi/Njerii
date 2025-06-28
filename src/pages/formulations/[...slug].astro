@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const formulations = await getCollection('formulations');
+  return formulations.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={`${entry.data.title} - Njerii's Digital Apothecary`}>
+  <article class="min-h-screen pt-24 pb-16">
+    <div class="container-max px-6">
+      <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="mb-12 text-center">
+          <h1 class="text-3xl md:text-4xl lg:text-5xl font-mono font-bold text-forest-green dark:text-dark-heading mb-6 leading-tight">
+            {entry.data.title}
+          </h1>
+          
+          <div class="flex flex-wrap items-center justify-center gap-4 mb-6">
+            <time class="font-mono text-charcoal/70 dark:text-dark-text/70">
+              {entry.data.pubDate.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </time>
+            
+            {entry.data.featured && (
+              <span class="px-3 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 rounded-full text-xs font-mono uppercase tracking-wide">
+                Featured
+              </span>
+            )}
+          </div>
+          
+          {entry.data.tags && (
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+              {entry.data.tags.map(tag => (
+                <span class="px-3 py-1 bg-matcha-green/20 text-matcha-green dark:text-dark-accent rounded-full text-sm font-mono">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          
+          <p class="text-xl text-charcoal dark:text-dark-text leading-relaxed max-w-3xl mx-auto">
+            {entry.data.description}
+          </p>
+        </header>
+        
+        <!-- Content -->
+        <div class="prose prose-lg max-w-none">
+          <div class="glass-effect rounded-xl p-8 md:p-12">
+            <Content />
+          </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="mt-12 flex justify-center">
+          <a 
+            href="/formulations" 
+            class="inline-flex items-center space-x-2 px-6 py-3 bg-transparent border-2 border-matcha-green text-matcha-green hover:bg-matcha-green hover:text-white font-mono rounded-lg transition-all duration-300"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            <span>Back to All Formulations</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  /* Custom prose styles for the content */
+  .prose {
+    @apply text-charcoal dark:text-dark-text;
+  }
+  
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    @apply font-mono text-forest-green dark:text-dark-heading;
+  }
+  
+  .prose h2 {
+    @apply text-2xl md:text-3xl mt-12 mb-6;
+  }
+  
+  .prose h3 {
+    @apply text-xl md:text-2xl mt-8 mb-4;
+  }
+  
+  .prose p {
+    @apply mb-6 leading-relaxed;
+  }
+  
+  .prose code {
+    @apply bg-matcha-green/20 text-matcha-green dark:text-dark-accent px-2 py-1 rounded font-mono text-sm;
+  }
+  
+  .prose pre {
+    @apply bg-charcoal dark:bg-gray-900 text-parchment dark:text-dark-text p-6 rounded-lg overflow-x-auto my-8;
+  }
+  
+  .prose pre code {
+    @apply bg-transparent text-inherit p-0;
+  }
+  
+  .prose blockquote {
+    @apply border-l-4 border-matcha-green pl-6 italic text-charcoal/80 dark:text-dark-text/80 my-8;
+  }
+  
+  .prose ul, .prose ol {
+    @apply mb-6 pl-6;
+  }
+  
+  .prose li {
+    @apply mb-2;
+  }
+  
+  .prose a {
+    @apply text-matcha-green dark:text-dark-accent hover:text-forest-green dark:hover:text-dark-heading transition-colors duration-200;
+  }
+  
+  .prose strong {
+    @apply font-bold text-forest-green dark:text-dark-heading;
+  }
+  
+  .prose em {
+    @apply italic;
+  }
+</style>

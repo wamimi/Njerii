@@ -1,5 +1,5 @@
 {
-  "name": "shaggy-star",
+  "name": "digital-apothecary",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -11,18 +11,21 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/markdown-remark": "^5.3.0",
     "@astrojs/mdx": "^3.1.9",
-    "@astrojs/rss": "^4.0.5",
-    "@fontsource/space-mono": "^5.1.1",
-    "@fontsource/vt323": "^5.1.0",
+    "@astrojs/react": "^3.6.2",
+    "@astrojs/tailwind": "^5.1.1",
+    "@fontsource/jetbrains-mono": "^5.1.1",
+    "@fontsource/lora": "^5.1.0",
     "astro": "^4.16.13",
-    "date-fns": "^4.1.0",
-    "sharp": "^0.33.5"
+    "cmdk": "^1.0.0",
+    "framer-motion": "^11.11.17",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.14"
   },
   "devDependencies": {
-    "@types/node": "^20.17.7",
-    "gh-pages": "^6.2.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "typescript": "^5.6.3"
   }
 }

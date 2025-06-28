@@ -1,0 +1,94 @@
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/700.css';
+@import '@fontsource/lora/400.css';
+@import '@fontsource/lora/500.css';
+@import '@fontsource/lora/700.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-parchment text-charcoal font-serif transition-colors duration-300;
+  }
+  
+  .dark body {
+    @apply bg-dark-bg text-dark-text;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-mono text-forest-green;
+  }
+  
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    @apply text-dark-heading;
+  }
+  
+  p, li {
+    @apply font-serif text-charcoal;
+  }
+  
+  .dark p, .dark li {
+    @apply text-dark-text;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-20 px-6 lg:px-8;
+  }
+  
+  .container-max {
+    @apply max-w-7xl mx-auto;
+  }
+  
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .dark .glass-effect {
+    @apply bg-black/20 border-white/10;
+  }
+  
+  .math-pattern {
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(138, 158, 129, 0.15) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+  
+  .dark .math-pattern {
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(138, 158, 129, 0.1) 1px, transparent 0);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-sage-green/20;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-matcha-green rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-forest-green;
+}
+
+/* Selection styles */
+::selection {
+  @apply bg-matcha-green/30 text-forest-green;
+}
+
+.dark ::selection {
+  @apply bg-dark-accent/30 text-dark-heading;
+}

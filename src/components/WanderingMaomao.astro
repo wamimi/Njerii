@@ -1,0 +1,66 @@
+---
+// Wandering Maomao animation component
+---
+
+<div class="fixed bottom-0 left-0 w-full pointer-events-none z-10">
+  <div class="maomao-container">
+    <div class="maomao-character">
+      <!-- Simple Maomao representation using the provided image -->
+      <img 
+        src="/images/maomao alien stage cover (art is not made by me).jpg" 
+        alt="Wandering Maomao" 
+        class="w-16 h-16 rounded-full object-cover border-2 border-matcha-green shadow-lg"
+      />
+    </div>
+  </div>
+</div>
+
+<style>
+  .maomao-container {
+    position: relative;
+    height: 80px;
+    overflow: hidden;
+  }
+  
+  .maomao-character {
+    position: absolute;
+    bottom: 10px;
+    animation: walk 30s linear infinite;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  }
+  
+  @keyframes walk {
+    0% {
+      transform: translateX(-100px);
+    }
+    100% {
+      transform: translateX(calc(100vw + 100px));
+    }
+  }
+  
+  /* Pause animation on hover */
+  .maomao-character:hover {
+    animation-play-state: paused;
+  }
+  
+  /* Add a subtle bounce effect */
+  .maomao-character img {
+    animation: bounce 2s ease-in-out infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  /* Hide on mobile to avoid performance issues */
+  @media (max-width: 768px) {
+    .maomao-container {
+      display: none;
+    }
+  }
+</style>

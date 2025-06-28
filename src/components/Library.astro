@@ -1,0 +1,145 @@
+---
+// Library section with curated papers and resources
+---
+
+<section id="library" class="section-padding">
+  <div class="container-max">
+    <div class="text-center mb-16 animate-on-scroll">
+      <h2 class="text-4xl md:text-5xl font-mono font-bold mb-6">The Library</h2>
+      <p class="text-xl text-charcoal dark:text-dark-text max-w-3xl mx-auto">
+        A curated collection of foundational papers, cutting-edge research, and essential resources 
+        that shape the landscape of cryptography and privacy-preserving technologies.
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Foundational Papers -->
+      <div class="space-y-8 animate-on-scroll">
+        <h3 class="text-2xl font-mono font-bold text-forest-green dark:text-dark-heading mb-6">
+          Foundational Works
+        </h3>
+        
+        <article class="glass-effect rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+          <h4 class="font-mono font-bold text-lg text-matcha-green dark:text-dark-accent mb-2">
+            The Knowledge Complexity of Interactive Proof Systems
+          </h4>
+          <p class="text-sm text-charcoal/80 dark:text-dark-text/80 mb-3">
+            Goldwasser, S., Micali, S., & Rackoff, C. (1989). <em>SIAM Journal on Computing</em>, 18(1), 186-208.
+          </p>
+          <p class="text-charcoal dark:text-dark-text text-sm leading-relaxed mb-3">
+            The seminal paper that introduced zero-knowledge proofs, fundamentally changing how we think about proving knowledge without revealing information.
+          </p>
+          <p class="text-sm italic text-matcha-green dark:text-dark-accent">
+            My note: This paper laid the theoretical foundation for everything we do in privacy-preserving cryptography today. The elegance of the zero-knowledge property continues to inspire new applications.
+          </p>
+        </article>
+        
+        <article class="glass-effect rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+          <h4 class="font-mono font-bold text-lg text-matcha-green dark:text-dark-accent mb-2">
+            Quadratic Span Programs and Succinct NIZKs without PCPs
+          </h4>
+          <p class="text-sm text-charcoal/80 dark:text-dark-text/80 mb-3">
+            Gennaro, R., Gentry, C., Parno, B., & Raykova, M. (2013). <em>EUROCRYPT 2013</em>.
+          </p>
+          <p class="text-charcoal dark:text-dark-text text-sm leading-relaxed mb-3">
+            Introduced Quadratic Arithmetic Programs (QAPs), the mathematical foundation underlying zk-SNARKs and modern zero-knowledge proof systems.
+          </p>
+          <p class="text-sm italic text-matcha-green dark:text-dark-accent">
+            My note: QAPs bridge the gap between circuit satisfiability and polynomial commitments. Understanding this transformation is crucial for anyone working with zk-SNARKs.
+          </p>
+        </article>
+      </div>
+      
+      <!-- Recent Research -->
+      <div class="space-y-8 animate-on-scroll" style="animation-delay: 0.2s">
+        <h3 class="text-2xl font-mono font-bold text-forest-green dark:text-dark-heading mb-6">
+          Recent Advances
+        </h3>
+        
+        <article class="glass-effect rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+          <h4 class="font-mono font-bold text-lg text-matcha-green dark:text-dark-accent mb-2">
+            Plonk: Permutations over Lagrange-bases for Oecumenical Noninteractive arguments of Knowledge
+          </h4>
+          <p class="text-sm text-charcoal/80 dark:text-dark-text/80 mb-3">
+            Gabizon, A., Williamson, Z. J., & Ciobotaru, O. (2019). <em>IACR ePrint Archive</em>.
+          </p>
+          <p class="text-charcoal dark:text-dark-text text-sm leading-relaxed mb-3">
+            Introduced a universal and updatable zk-SNARK construction that doesn't require a trusted setup per circuit, revolutionizing practical ZK applications.
+          </p>
+          <p class="text-sm italic text-matcha-green dark:text-dark-accent">
+            My note: PLONK's universal setup is a game-changer for production systems. The permutation argument technique is particularly elegant and has inspired many subsequent works.
+          </p>
+        </article>
+        
+        <article class="glass-effect rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+          <h4 class="font-mono font-bold text-lg text-matcha-green dark:text-dark-accent mb-2">
+            Halo: Recursive Proof Composition without a Trusted Setup
+          </h4>
+          <p class="text-sm text-charcoal/80 dark:text-dark-text/80 mb-3">
+            Bowe, S., Grigg, J., & Hopwood, D. (2019). <em>IACR ePrint Archive</em>.
+          </p>
+          <p class="text-charcoal dark:text-dark-text text-sm leading-relaxed mb-3">
+            Demonstrated how to achieve recursive proof composition without trusted setups, enabling infinite scalability for blockchain applications.
+          </p>
+          <p class="text-sm italic text-matcha-green dark:text-dark-accent">
+            My note: Halo's approach to recursion through inner product arguments is mathematically beautiful. It opens the door to truly scalable blockchain architectures.
+          </p>
+        </article>
+      </div>
+    </div>
+    
+    <!-- Additional Resources -->
+    <div class="mt-16 animate-on-scroll">
+      <h3 class="text-2xl font-mono font-bold text-forest-green dark:text-dark-heading mb-8 text-center">
+        Essential Resources
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <a 
+          href="https://zkp.science/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="glass-effect rounded-xl p-6 hover:shadow-lg transition-all duration-300 group text-center"
+        >
+          <div class="text-3xl mb-4">🔬</div>
+          <h4 class="font-mono font-bold text-lg text-matcha-green dark:text-dark-accent mb-2 group-hover:text-forest-green dark:group-hover:text-dark-heading transition-colors">
+            ZKP Science
+          </h4>
+          <p class="text-sm text-charcoal dark:text-dark-text">
+            Comprehensive resource for zero-knowledge proof research and implementations.
+          </p>
+        </a>
+        
+        <a 
+          href="https://www.zkdocs.com/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="glass-effect rounded-xl p-6 hover:shadow-lg transition-all duration-300 group text-center"
+        >
+          <div class="text-3xl mb-4">📚</div>
+          <h4 class="font-mono font-bold text-lg text-matcha-green dark:text-dark-accent mb-2 group-hover:text-forest-green dark:group-hover:text-dark-heading transition-colors">
+            ZK Documentation
+          </h4>
+          <p class="text-sm text-charcoal dark:text-dark-text">
+            Practical guides and tutorials for implementing zero-knowledge proofs.
+          </p>
+        </a>
+        
+        <a 
+          href="https://eprint.iacr.org/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="glass-effect rounded-xl p-6 hover:shadow-lg transition-all duration-300 group text-center"
+        >
+          <div class="text-3xl mb-4">📄</div>
+          <h4 class="font-mono font-bold text-lg text-matcha-green dark:text-dark-accent mb-2 group-hover:text-forest-green dark:group-hover:text-dark-heading transition-colors">
+            IACR ePrint
+          </h4>
+          <p class="text-sm text-charcoal dark:text-dark-text">
+            The premier archive for cryptography research papers and preprints.
+          </p>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

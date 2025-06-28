@@ -1,0 +1,102 @@
+---
+import { getCollection } from 'astro:content';
+
+// Fetch latest formulations (blog posts)
+const allFormulations = await getCollection('formulations');
+const latestFormulations = allFormulations
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<section id="formulations" class="section-padding bg-sage-green/10 dark:bg-dark-bg/50">
+  <div class="container-max">
+    <div class="text-center mb-16 animate-on-scroll">
+      <h2 class="text-4xl md:text-5xl font-mono font-bold mb-6">Latest Formulations</h2>
+      <p class="text-xl text-charcoal dark:text-dark-text max-w-3xl mx-auto">
+        Deep dives into cryptographic concepts, mathematical proofs, and the philosophical implications 
+        of privacy-preserving technologies. Each formulation distills complex ideas into accessible insights.
+      </p>
+    </div>
+    
+    <div class="space-y-8">
+      {latestFormulations.map((post, index) => (
+        <article class="glass-effect rounded-xl p-8 hover:shadow-xl transition-all duration-300 animate-on-scroll group" style={`animation-delay: ${index * 0.1}s`}>
+          <div class="flex flex-col md:flex-row md:items-start justify-between mb-4">
+            <div class="flex-1 mb-4 md:mb-0 md:pr-8">
+              <h3 class="text-2xl font-mono font-bold text-forest-green dark:text-dark-heading mb-3 group-hover:text-matcha-green transition-colors duration-200">
+                <a href={`/formulations/${post.slug}`} class="hover:underline">
+                  {post.data.title}
+                </a>
+              </h3>
+              
+              <p class="text-charcoal dark:text-dark-text leading-relaxed mb-4">
+                {post.data.description}
+              </p>
+              
+              {post.data.tags && (
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {post.data.tags.map(tag => (
+                    <span class="px-3 py-1 bg-matcha-green/20 text-matcha-green dark:text-dark-accent rounded-full text-sm font-mono">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <div class="flex flex-col items-end space-y-4">
+              <time class="text-sm font-mono text-charcoal/70 dark:text-dark-text/70 whitespace-nowrap">
+                {post.data.pubDate.toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </time>
+              
+              {post.data.featured && (
+                <span class="px-3 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 rounded-full text-xs font-mono uppercase tracking-wide">
+                  Featured
+                </span>
+              )}
+            </div>
+          </div>
+          
+          <a 
+            href={`/formulations/${post.slug}`}
+            class="inline-flex items-center space-x-2 text-matcha-green dark:text-dark-accent hover:text-forest-green dark:hover:text-dark-heading font-mono transition-colors duration-200"
+          >
+            <span>Read full formulation</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </article>
+      ))}
+    </div>
+    
+    <!-- View All Link -->
+    <div class="text-center mt-12 animate-on-scroll">
+      <a 
+        href="/formulations" 
+        class="inline-flex items-center space-x-2 px-8 py-4 bg-transparent border-2 border-matcha-green text-matcha-green hover:bg-matcha-green hover:text-white font-mono rounded-lg transition-all duration-300 hover:scale-105"
+      >
+        <span>View All Formulations</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </a>
+    </div>
+    
+    {latestFormulations.length === 0 && (
+      <div class="text-center py-16 animate-on-scroll">
+        <div class="text-6xl mb-4">📜</div>
+        <h3 class="text-2xl font-mono font-bold text-forest-green dark:text-dark-heading mb-4">
+          Formulations Brewing
+        </h3>
+        <p class="text-charcoal dark:text-dark-text">
+          New insights and deep dives are being crafted. Check back soon for the latest formulations.
+        </p>
+      </div>
+    )}
+  </div>
+</section>

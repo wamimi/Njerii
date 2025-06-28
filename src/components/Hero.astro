@@ -1,0 +1,97 @@
+---
+// Hero section with mathematical background
+---
+
+<section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+  <!-- Mathematical Background -->
+  <div class="absolute inset-0 opacity-5 dark:opacity-10">
+    <img 
+      src="/images/Fibonacci Maths Physicals Background Wallpaper.jpg" 
+      alt="Mathematical background" 
+      class="w-full h-full object-cover"
+    />
+  </div>
+  
+  <!-- Floating Mathematical Elements -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-20 left-10 animate-float" style="animation-delay: 0s;">
+      <div class="text-matcha-green/30 font-mono text-sm">∫ f(x)dx</div>
+    </div>
+    <div class="absolute top-40 right-20 animate-float" style="animation-delay: 1s;">
+      <div class="text-matcha-green/30 font-mono text-sm">∀x ∈ ℝ</div>
+    </div>
+    <div class="absolute bottom-40 left-20 animate-float" style="animation-delay: 2s;">
+      <div class="text-matcha-green/30 font-mono text-sm">lim(n→∞)</div>
+    </div>
+    <div class="absolute bottom-20 right-10 animate-float" style="animation-delay: 3s;">
+      <div class="text-matcha-green/30 font-mono text-sm">∑ᵢ₌₁ⁿ</div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="container-max px-6 text-center relative z-10">
+    <div class="max-w-4xl mx-auto space-y-8 animate-on-scroll">
+      <!-- Greeting -->
+      <div class="space-y-4">
+        <h1 class="text-2xl md:text-3xl font-mono text-matcha-green">
+          Hajimemashite.
+        </h1>
+        
+        <!-- Name and Title -->
+        <div class="space-y-6">
+          <h2 class="text-4xl md:text-6xl lg:text-7xl font-mono font-bold text-forest-green dark:text-dark-heading leading-tight">
+            Njerii.
+          </h2>
+          
+          <p class="text-xl md:text-2xl text-charcoal dark:text-dark-text max-w-3xl mx-auto leading-relaxed">
+            Crafting secure and private digital solutions through the art of mathematical precision and cryptographic elegance.
+          </p>
+        </div>
+        
+        <!-- Specializations -->
+        <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-base font-mono">
+          <span class="px-4 py-2 bg-matcha-green/20 text-forest-green dark:text-dark-accent rounded-full border border-matcha-green/30">
+            Zero-Knowledge Proofs
+          </span>
+          <span class="px-4 py-2 bg-matcha-green/20 text-forest-green dark:text-dark-accent rounded-full border border-matcha-green/30">
+            Cryptography
+          </span>
+          <span class="px-4 py-2 bg-matcha-green/20 text-forest-green dark:text-dark-accent rounded-full border border-matcha-green/30">
+            Rust
+          </span>
+          <span class="px-4 py-2 bg-matcha-green/20 text-forest-green dark:text-dark-accent rounded-full border border-matcha-green/30">
+            Protocol Engineering
+          </span>
+        </div>
+      </div>
+      
+      <!-- Call to Action -->
+      <div class="pt-8">
+        <a 
+          href="#experiments" 
+          class="inline-flex items-center space-x-2 px-8 py-4 bg-matcha-green hover:bg-forest-green text-white font-mono rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
+        >
+          <span>Explore the Laboratory</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <div class="w-6 h-10 border-2 border-matcha-green rounded-full flex justify-center">
+      <div class="w-1 h-3 bg-matcha-green rounded-full mt-2 animate-pulse"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(5px) rotate(-1deg); }
+  }
+</style>

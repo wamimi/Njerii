@@ -1,0 +1,29 @@
+---
+title: "Fuzzing Protocol Implementations for Edge Case Discovery"
+description: "Using property-based testing and fuzzing to uncover vulnerabilities in cryptographic protocols"
+pubDate: 2025-01-20
+status: "active"
+tags: ["Fuzzing", "Testing", "Security", "Protocols"]
+---
+
+# Fuzzing Protocol Implementations for Edge Case Discovery
+
+Currently developing a comprehensive fuzzing framework for testing cryptographic protocol implementations. The goal is to automatically discover edge cases and potential vulnerabilities that traditional testing might miss.
+
+## Methodology
+
+1. **Property-Based Testing**: Define invariants that should hold for all valid inputs
+2. **Mutation Fuzzing**: Generate malformed inputs to test error handling
+3. **Coverage-Guided Fuzzing**: Use code coverage to guide input generation
+
+## Initial Findings
+
+- Discovered several integer overflow conditions in parsing logic
+- Found timing side-channels in signature verification
+- Identified memory leaks in error handling paths
+
+## Next Steps
+
+- Integrate with continuous integration pipeline
+- Expand to test consensus mechanisms under adversarial conditions
+- Develop domain-specific fuzzing strategies for ZK circuits

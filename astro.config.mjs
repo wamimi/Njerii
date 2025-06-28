@@ -1,17 +1,20 @@
 import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
-  integrations: [mdx()],
+  integrations: [
+    react(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    mdx()
+  ],
   markdown: {
     shikiConfig: {
-      theme: 'dracula',
+      theme: 'github-dark',
       wrap: true
-    }
-  },
-  vite: {
-    optimizeDeps: {
-      exclude: ['sharp']
     }
   }
 });

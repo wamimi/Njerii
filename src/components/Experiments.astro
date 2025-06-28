@@ -1,0 +1,86 @@
+---
+import { getCollection } from 'astro:content';
+
+// Fetch experiments and sort by date
+const experiments = (await getCollection('experiments')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<section id="experiments" class="section-padding bg-sage-green/10 dark:bg-dark-bg/50">
+  <div class="container-max">
+    <div class="text-center mb-16 animate-on-scroll">
+      <h2 class="text-4xl md:text-5xl font-mono font-bold mb-6">Experiments</h2>
+      <p class="text-xl text-charcoal dark:text-dark-text max-w-3xl mx-auto">
+        Active research and development in cryptography, protocol engineering, and systems optimization. 
+        Each experiment represents a step toward more secure and efficient digital infrastructure.
+      </p>
+    </div>
+    
+    <div class="space-y-8">
+      {experiments.map((experiment, index) => (
+        <article class="glass-effect rounded-xl p-8 hover:shadow-xl transition-all duration-300 animate-on-scroll group" style={`animation-delay: ${index * 0.1}s`}>
+          <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+            <div class="flex items-center space-x-4 mb-4 md:mb-0">
+              <h3 class="text-2xl font-mono font-bold text-forest-green dark:text-dark-heading group-hover:text-matcha-green transition-colors duration-200">
+                {experiment.data.title}
+              </h3>
+              <span class={`px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wide ${
+                experiment.data.status === 'active' 
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
+                  : experiment.data.status === 'completed'
+                  ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                  : 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'
+              }`}>
+                {experiment.data.status}
+              </span>
+            </div>
+            <time class="text-sm font-mono text-charcoal/70 dark:text-dark-text/70">
+              {experiment.data.pubDate.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </time>
+          </div>
+          
+          <p class="text-charcoal dark:text-dark-text mb-6 leading-relaxed">
+            {experiment.data.description}
+          </p>
+          
+          {experiment.data.tags && (
+            <div class="flex flex-wrap gap-2 mb-6">
+              {experiment.data.tags.map(tag => (
+                <span class="px-3 py-1 bg-matcha-green/20 text-matcha-green dark:text-dark-accent rounded-full text-sm font-mono">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          
+          <a 
+            href={`/experiments/${experiment.slug}`}
+            class="inline-flex items-center space-x-2 text-matcha-green dark:text-dark-accent hover:text-forest-green dark:hover:text-dark-heading font-mono transition-colors duration-200"
+          >
+            <span>Read detailed notes</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </article>
+      ))}
+    </div>
+    
+    {experiments.length === 0 && (
+      <div class="text-center py-16 animate-on-scroll">
+        <div class="text-6xl mb-4">🧪</div>
+        <h3 class="text-2xl font-mono font-bold text-forest-green dark:text-dark-heading mb-4">
+          Laboratory Under Construction
+        </h3>
+        <p class="text-charcoal dark:text-dark-text">
+          New experiments are brewing. Check back soon for the latest research updates.
+        </p>
+      </div>
+    )}
+  </div>
+</section>
